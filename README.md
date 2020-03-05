@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/amnk/dd2tf.svg?branch=master)](https://travis-ci.org/amnk/dd2tf)
+[![Build Status](https://travis-ci.org/devops-works/dd2tf.svg?branch=master)](https://travis-ci.org/devops-works/dd2tf)
 
 A simple utility to convert DataDog dashboards and/or monitors to Terraform format.
 
@@ -9,10 +9,14 @@ Useful, if you had all dashboards configured adhoc and now want to follow DevOps
 If you are using non-US datadog versions (e.g. `eu`), you can change the API URL using `DATADOG_BASE_URL`.
 
 # How to build
+
 Just run (GOPATH and sometimes GOBIN have to be set):
+
 ```bash
-cd src
-go build && ./dd2tf
+go get -u github.com/containous/go-bindata/...
+go generate
+go build .
+./dd2tf
 ```
 
 # Examples

@@ -35,6 +35,7 @@ func (d Dashboard) getAllElements(client datadog.Client) ([]Item, error) {
 		return ids, err
 	}
 	for _, elem := range dashboards {
+		fmt.Println("found dashboard", *elem.Id)
 		ids = append(ids, Item{id: *elem.Id, d: Dashboard{}})
 	}
 	return ids, nil
