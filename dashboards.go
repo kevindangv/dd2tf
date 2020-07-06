@@ -17,7 +17,7 @@ func (d Dashboard) getElement(client datadog.Client, id interface{}) (interface{
 }
 
 func (d Dashboard) getAsset() string {
-	return "tmpl/timeboard.tmpl"
+	return "tmpl/dashboard.tmpl"
 }
 
 func (d Dashboard) getName() string {
