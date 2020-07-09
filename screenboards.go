@@ -4,13 +4,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/zorkian/go-datadog-api"
+	datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
 type ScreenBoard struct {
 }
 
-func (s ScreenBoard) getElement(client datadog.Client, id interface{}) (interface{}, error) {
+func (s ScreenBoard) getElement(client datadog.APIClient, id interface{}) (interface{}, error) {
 	idStr := fmt.Sprintf("%v", id)
 	elem, err := client.GetScreenboard(*datadog.String(idStr))
 	return elem, err
@@ -28,7 +28,7 @@ func (s ScreenBoard) String() string {
 	return s.getName()
 }
 
-func (s ScreenBoard) getAllElements(client datadog.Client) ([]Item, error) {
+func (s ScreenBoard) getAllElements(client datadog.APIClient) ([]Item, error) {
 	var ids []Item
 	dashboards, err := client.GetScreenboards()
 	if err != nil {

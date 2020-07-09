@@ -1,0 +1,397 @@
+[33mcommit eaab656f80262f69f504b1c487469383d65d6257[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/kevin[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: kevindangv <43392015+kevindangv@users.noreply.github.com>
+Date:   Mon Jul 6 15:32:00 2020 -0400
+
+    Dashboard Template
+
+[33mcommit d5458ee69291f36ee5149ca6064d630b7aaf447a[m
+Author: Michel Blanc <mb@devops.works>
+Date:   Thu Mar 5 19:04:12 2020 +0100
+
+    Fixes layout
+
+[33mcommit 251eb2ddfe1d94dddcbf67e3589ab93bc350eb02[m
+Author: Michel Blanc <mb@devops.works>
+Date:   Thu Mar 5 18:27:52 2020 +0100
+
+    Fixes layout & templates
+    
+    No need for src/
+    Fixed templates according to pr 24
+
+[33mcommit 57d79b6d8f36cd0df109e06d415971327aef3fb9[m
+Merge: ff3371a 5d90d41
+Author: Michel Blanc <mb@devops.works>
+Date:   Thu Mar 5 18:22:23 2020 +0100
+
+    Merge branch 'pr29'
+    
+    * pr29:
+      allow fetch by string
+      update readme
+      convert to use go mod
+
+[33mcommit ff3371addbd0792f6ec189e9de70cfe2730da21a[m
+Author: Michel Blanc <mb@devops.works>
+Date:   Thu Mar 5 18:09:28 2020 +0100
+
+    Adds support for EU (and potentially future) region
+    
+    DataDog has US (default) and EU region.
+    zorkian/go-datadog-api supports changing region by calling SetBaseUrl.
+    
+    This commit adds a `DATADOG_BASE_URL` environmanet variable that can be
+    set to change the API region endpoint (https://api.datadoghq.eu for the
+    EU).
+
+[33mcommit 5d90d41d446b2025e297c03dad64f4d8d32a3794[m
+Author: Kevin Krauss <kkrauss@twilio.com>
+Date:   Tue Feb 18 11:53:29 2020 -0800
+
+    allow fetch by string
+
+[33mcommit 69254d7a329a12b2484614149b17cd261bcec1c4[m
+Author: Kevin Krauss <kkrauss@twilio.com>
+Date:   Thu Feb 6 13:19:51 2020 -0800
+
+    update readme
+
+[33mcommit 9e14853459038570993763253a4ec7c0fb9266c7[m
+Author: Kevin Krauss <kkrauss@twilio.com>
+Date:   Thu Feb 6 13:18:38 2020 -0800
+
+    convert to use go mod
+
+[33mcommit 5f2789c353650eda4c0ed2ad8dc206bd3d9dc51a[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Tue May 14 10:33:17 2019 +0200
+
+    Remove redundant dependency
+
+[33mcommit 24dbd2ab23b2a03f77e4813223751297f54629b5[m
+Merge: 0573927 f0ebbee
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Tue May 14 10:13:07 2019 +0200
+
+    Merge pull request #18 from lucioveloso/fix/add_eot_monitor_escalation_message
+    
+    Add end of transmission for monitor escalation message
+
+[33mcommit f0ebbee73a0d15490032e867e1525e55ccd1d606[m
+Author: Lucio Veloso <lucio.veloso@mobimeo.com>
+Date:   Mon May 13 21:54:34 2019 +0200
+
+    Add end of transmission for monitor escalation message
+    
+    Closes: #19
+
+[33mcommit 0573927cfc80bfb8c9286ed30cc6d0d7e30edfa3[m[33m ([m[1;33mtag: v0.1c[m[33m)[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Sat May 4 22:43:51 2019 +0200
+
+    Enable Github Releases autodeploy
+    
+    Related: #16
+
+[33mcommit baccc23a51dfd8daf85e8a6935336f531e809d6d[m
+Merge: e312181 040eb5c
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Fri Apr 12 21:14:36 2019 +0200
+
+    Merge pull request #15 from amnk/amnk/issue-14
+    
+    Add conditional format to dashboard
+
+[33mcommit 040eb5ce102120b24851db6efb3e9261c1bf611b[m[33m ([m[1;31morigin/amnk/issue-14[m[33m)[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Wed Apr 10 23:16:14 2019 +0200
+
+    Add a simple test for dashboards subcommand
+
+[33mcommit 0a6af9eb28ad0a324df9094becfb10afddfc546b[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Wed Apr 10 23:15:36 2019 +0200
+
+    Add conditional format to dashboard
+    
+    Closes: #14
+
+[33mcommit e31218157af4e3d187354fd2a20834a91b393f97[m
+Merge: 694725d f9cb3e8
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Wed Mar 6 19:39:43 2019 +0100
+
+    Merge pull request #13 from knqyf263/fix/template
+    
+    Fix screenboard template
+
+[33mcommit f9cb3e82eee71a43a29a60342fe1e486eb6819be[m
+Author: knqyf263 <knqyf263@gmail.com>
+Date:   Mon Feb 25 19:32:49 2019 +0900
+
+    Fix screenboard template
+
+[33mcommit 694725d211d41a8eb74a7dd11d2e680a705ca0cd[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Thu Jan 3 21:31:22 2019 +0100
+
+    Update README
+
+[33mcommit fa919a0557d1877163f3cc20afd82b5a9881cb63[m
+Merge: 1cd9949 a460563
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Thu Jan 3 18:26:41 2019 +0100
+
+    Merge pull request #12 from amnk/issue/10
+    
+    Initial implementation of screenboards
+
+[33mcommit a4605637590e0ec86846f298979ad4e266e62bba[m[33m ([m[1;31morigin/issue/10[m[33m)[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Thu Jan 3 01:46:41 2019 +0100
+
+    Initial implementation of screenboards
+    
+    This commit is huge since I found an issue with dependencies, and
+    decided to migrate go-api to github based tracking, and introduce `dep`.
+    
+    This is also the first commit with tests! :)
+    
+    Related: #10
+
+[33mcommit 1cd99492fe2d487c8d57d18ffb4180a570d2f33b[m
+Merge: 645bcf3 6c144f1
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Thu Jan 3 18:10:42 2019 +0100
+
+    Merge pull request #11 from amnk/rewrite
+    
+    Attempt to rewrite things
+
+[33mcommit 6c144f11140cd0e5f6c3fb41233da8027bbf6576[m[33m ([m[1;31morigin/rewrite[m[33m)[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Thu Jan 3 12:11:37 2019 +0100
+
+    Add debug output flag
+    
+    This also inclused a small bugfix, where after succesful rendering loop
+    will continue, which should not happen.
+
+[33mcommit 1e371cef10133d3b57818c30c5aad8a1144eda3d[m
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Sat Dec 29 00:31:26 2018 +0100
+
+    Attempt to rewrite things
+    
+    This unifies the approach between different commands, and makes them
+    actual subcommands instead of flags.
+    
+    All components (or subcommands) in this setup share same flags and same
+    execution logic, thus they were unified. This brings the downside of
+    requiring another rewrite in case we have a subdommand that uses
+    different flow, but it is ok for now.
+
+[33mcommit 645bcf33000867b32c85a8a83bc0afddbda91102[m
+Merge: 3a8cf38 e6a9e41
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Mon Jul 23 12:11:46 2018 +0200
+
+    Merge pull request #9 from mllu/task/skip_aggregrator_if_empty
+    
+    skip aggregator if empty
+
+[33mcommit e6a9e41d28b9d61c743f3b1ce3698c42c321fca1[m
+Author: mllu <mornlyn@gmail.com>
+Date:   Fri Jul 20 14:09:03 2018 -0700
+
+    skip aggregator if empty
+
+[33mcommit 3a8cf3830b1b24c56c7fbd88595deeef4bcaafc9[m[33m ([m[1;31morigin/amnk/reduce-code-duplication[m[33m)[m
+Merge: dc56ca9 edd9143
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Tue Jun 26 10:36:43 2018 +0200
+
+    Merge pull request #8 from ngetahun-dd/master
+    
+    Include tags in monitor definition
+
+[33mcommit edd914360d34c268f9947d68e26a28a4995fbd43[m
+Author: Natnael Getahun <natnael.getahun@datadoghq.com>
+Date:   Sat Jun 16 16:35:15 2018 -0700
+
+    Include tags in monitor definition
+
+[33mcommit dc56ca9661b9d0871802980eaa92057e96079e75[m
+Merge: a6c6b3c 5aa432c
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Tue Jun 12 22:22:54 2018 +0200
+
+    Merge pull request #7 from ngetahun-dd/master
+    
+    Fix multiline messages and escaping queries
+
+[33mcommit 5aa432ceaa2ddb5829cdc6f6f019bd35b049ef53[m
+Author: Natnael Getahun <natnael.getahun@datadoghq.com>
+Date:   Tue Jun 12 14:08:16 2018 -0400
+
+    Fix multiline messages and escaping queries
+    
+    Change message portion of monitor to use <<EOT EOT so that multiline
+    messages are handled properly.
+    
+    Use strconv.Quote to cleanly escape all characters, not just quotes
+
+[33mcommit a6c6b3c2da2b9ae0045d8d5663855bbbb6a8ebe8[m
+Merge: f075c12 ce76757
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Thu Mar 1 11:33:06 2018 +0100
+
+    Merge pull request #6 from amnk/feature/pflag
+    
+    Migrate to pflags for better arguments handling
+
+[33mcommit ce767577b034c8b78ddf2190a46ea9a2fdd294e1[m[33m ([m[1;31morigin/feature/pflag[m[33m)[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Tue Feb 20 16:57:38 2018 +0100
+
+    Escape `query` in template
+    
+    DataDog API returns query as is without escaping quotes thus failing
+    Terraform.
+
+[33mcommit a2df44bc7cc96fba4c782cbc8c837f52d3c41923[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Tue Feb 20 16:56:56 2018 +0100
+
+    Fix formatting of the code
+
+[33mcommit 3dc71069da8f33f0320b11e940417321a6a376fd[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Wed Feb 14 19:30:00 2018 +0100
+
+    Migrate to pflags for better command line parsing
+
+[33mcommit f075c12cea4bb4304aa3be64dde584ebdc9ab294[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Fri Feb 16 17:14:53 2018 +0100
+
+    Fix a bug with improper call of `fmt.Sprintf`
+
+[33mcommit 388f019e5995903532a0ca07443cf3d18bb1b30c[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Wed Feb 14 16:37:14 2018 +0100
+
+    Update README with proper instructions
+
+[33mcommit 97d190d5f885b4264f89aef1c15dafffda133047[m
+Merge: ce7c859 d919d3b
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Wed Feb 14 16:34:57 2018 +0100
+
+    Merge pull request #5 from amnk/abstractions
+    
+    Better code structure
+
+[33mcommit d919d3b9eeacc9ab04b9e9011150258548bf2826[m[33m ([m[1;31morigin/abstractions[m[33m)[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Wed Feb 14 16:13:52 2018 +0100
+
+    Fix command line flags parsing
+    
+    Unfortunately we'll need separate flags for "fetch all" behavior,
+    otherwise we can't handle both cases with one flag and default library.
+    
+    Closes: #4
+
+[33mcommit 598156291cf1ae570a6f2d5b172088d597c2ae9b[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Wed Feb 14 14:52:32 2018 +0100
+
+    Introduce some types for better abstractions
+    
+    This commit reduces the copy-pasted code for rendering elements.
+
+[33mcommit ce7c8599a61a6e24ee59c3a7d48ab4c4f974d3e3[m
+Merge: e9ebc19 071e024
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Mon Feb 12 18:36:33 2018 +0100
+
+    Merge pull request #3 from amnk/monitors
+    
+    Add support of DataDog monitors export
+
+[33mcommit 071e024ad3d845c96a8c9cdd688a70f0fa65bb41[m[33m ([m[1;31morigin/monitors[m[33m)[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Mon Feb 12 17:36:03 2018 +0100
+
+    Add support of DataDog monitors export
+    
+    This change uncovered some other small things to change:
+    - change args parsing logic for default inputs (now if no arguments are
+      given - nothing is produced);
+    - switch to go-datadog-api.v2;
+    
+    Closes: #2
+
+[33mcommit e9ebc19025f34f47425bf187b7573cfc70ad9c81[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Tue Jan 23 13:15:58 2018 +0100
+
+    ... and remove TODO item after merge :)
+
+[33mcommit 2cd2860873f4d1f949a73832fd767a085fb7d46a[m
+Merge: 3633c7d 5c4ad34
+Author: amnk <amnk@users.noreply.github.com>
+Date:   Tue Jan 23 13:00:37 2018 +0100
+
+    Merge pull request #1 from amnk/feature/complete_bin
+    
+    Use `go-bindata` to include templates in the binary
+
+[33mcommit 5c4ad348f69c8300333aae727184000ef2e59cd2[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Tue Jan 23 12:56:59 2018 +0100
+
+    Use `go-bindata` to include templates in the binary
+
+[33mcommit 3633c7ded237c99ef8ae0fd5415a754dfba4467d[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Thu Jan 18 17:32:39 2018 +0100
+
+    Add Travis CI support
+
+[33mcommit c32a37664c88ad6861a77f1d3efd4b161612caf1[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Thu Jan 18 16:58:37 2018 +0100
+
+    Add some examples and build instructions
+
+[33mcommit 9c3460cd39c656865aedc7931485a62b5bbfef27[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Tue Nov 28 14:54:45 2017 +0100
+
+    Dashboards can be written to files
+
+[33mcommit bcaac1045338a9e7d1fa96659d96c4067b0124d3[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Mon Nov 27 13:52:15 2017 +0100
+
+    Lots of improvements, including:
+    
+    - it is now possible to render all dashboards, or selected ones;
+    - switch to "text/template";
+    - support of markers;
+    - support of styles;
+    - some attempts to reduce number of newlines;
+
+[33mcommit 7bac5c2da2b957d7747023da7059200710a238b6[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Mon Nov 20 16:52:17 2017 +0100
+
+    Fix formatting and logging.
+
+[33mcommit 91357f5d04ffdbd5c6e331a680d2b91570de7dd4[m
+Author: Aleksandr <alatar325@gmail.com>
+Date:   Fri Nov 17 18:42:56 2017 +0100
+
+    Initial commit

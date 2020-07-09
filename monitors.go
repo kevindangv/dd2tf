@@ -3,13 +3,13 @@
 package main
 
 import (
-	"github.com/zorkian/go-datadog-api"
+	datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
 type Monitor struct {
 }
 
-func (m Monitor) getElement(client datadog.Client, id interface{}) (interface{}, error) {
+func (m Monitor) getElement(client datadog.APIClient, id interface{}) (interface{}, error) {
 	mon, err := client.GetMonitor(*datadog.Int(id.(int)))
 	return mon, err
 }
@@ -26,7 +26,7 @@ func (m Monitor) String() string {
 	return m.getName()
 }
 
-func (m Monitor) getAllElements(client datadog.Client) ([]Item, error) {
+func (m Monitor) getAllElements(client datadog.APIClient) ([]Item, error) {
 	var ids []Item
 	monitors, err := client.GetMonitors()
 	if err != nil {
