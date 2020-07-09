@@ -3,6 +3,8 @@
 package main
 
 import (
+	"context"
+	"os"
 	datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
@@ -10,8 +12,20 @@ type Monitor struct {
 }
 
 func (m Monitor) getElement(client datadog.APIClient, id interface{}) (interface{}, error) {
-	mon, err := client.GetMonitor(*datadog.Int(id.(int)))
-	return mon, err
+		ctx := context.WithValue(
+			context.Background(),
+			datadog.ContextAPIKeys,
+			map[string]datadog.APIKey{
+				"apiKeyAuth": {
+					Key: os.Getenv("DD_CLIENT_API_KEY"),
+				},
+				"appKeyAuth": {
+					Key: os.Getenv("DD_CLIENT_APP_KEY"),
+				},
+			},
+		)
+        mon, _, err := client.MonitorsApi.GetMonitor(ctx, id.(int64)).Execute()
+        return mon, err
 }
 
 func (m Monitor) getAsset() string {
@@ -27,13 +41,26 @@ func (m Monitor) String() string {
 }
 
 func (m Monitor) getAllElements(client datadog.APIClient) ([]Item, error) {
-	var ids []Item
-	monitors, err := client.GetMonitors()
-	if err != nil {
-		return nil, err
-	}
-	for _, elem := range monitors {
-		ids = append(ids, Item{id: *elem.Id, d: Monitor{}})
-	}
-	return ids, nil
+        var ids []Item
+        ctx := context.WithValue(
+				context.Background(),
+				datadog.ContextAPIKeys,
+				map[string]datadog.APIKey{
+						"apiKeyAuth": {
+								Key: os.Getenv("DD_CLIENT_API_KEY"),
+						},
+						"appKeyAuth": {
+								Key: os.Getenv("DD_CLIENT_APP_KEY"),
+						},
+				},
+		)
+	monitors, _, err := client.MonitorsApi.ListMonitors(ctx).Execute()
+        if err != nil {
+                return nil, err
+        }
+        for _, elem := range monitors {
+                ids = append(ids, Item{id: *elem.Id, d: Monitor{}})
+        }
+        return ids, nil
 }
+

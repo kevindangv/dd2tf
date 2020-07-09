@@ -4,6 +4,7 @@ package main
 
 import (
         "bufio"
+        "context"
         "fmt"
         log "github.com/sirupsen/logrus"
         "os"
@@ -143,6 +144,33 @@ func main() {
                         subcommandOpts := NewSecondaryOptions(subcommand)
                         subcommand.Parse(os.Args[2:])
                         if subcommand.Parsed() {
+                                //datadogAPIKey, ok := os.LookupEnv("DATADOG_API_KEY")
+                                //if !ok {
+                                //        log.Fatal("Datadog API key not found, please make sure that DATADOG_API_KEY env variable is set")
+                                //}
+
+                                //datadogAPPKey, ok := os.LookupEnv("DATADOG_APP_KEY")
+                                //if !ok {
+                                //        log.Fatal("Datadog APP key not found, please make sure that DATADOG_APP_KEY env variable is set")
+                                //}
+
+                                //datadogBaseURL, ok := os.LookupEnv("DATADOG_BASE_URL")
+
+                                configuration := datadog.NewConfiguration()
+
+                                ctx := context.WithValue(
+                                        context.Background(),
+                                        datadog.ContextAPIKeys,
+                                        map[string]datadog.APIKey{
+                                                "apiKeyAuth": {
+                                                        Key: os.Getenv("DATADOG_API_KEY"),
+                                                },
+                                                "appKeyAuth": {
+                                                        Key: os.Getenv("DATADOG_APP_KEY"),
+                                                },
+                                        },
+                                )
+
                                 datadogAPIKey, ok := os.LookupEnv("DATADOG_API_KEY")
                                 if !ok {
                                         log.Fatal("Datadog API key not found, please make sure that DATADOG_API_KEY env variable is set")
@@ -153,17 +181,16 @@ func main() {
                                         log.Fatal("Datadog APP key not found, please make sure that DATADOG_APP_KEY env variable is set")
                                 }
 
-								datadogBaseURL, ok := os.LookupEnv("DATADOG_BASE_URL")
-
-								configuration := datadog.NewConfiguration()
-
                                 config = LocalConfig{
                                         client: *datadog.NewAPIClient(configuration),
                                 }
 
-                                if ok {
+			        config.client.KeyManagementApi.UpdateApplicationKey(ctx, datadogAPPKey).Execute()
+                                config.client.KeyManagementApi.UpdateAPIKey(ctx, datadogAPIKey).Execute()
+
+                                //if ok {
                                         //config.client.SetBaseUrl(datadogBaseURL)
-                                }
+                                //}
 
                                 if subcommandOpts.debug {
                                         log.SetLevel(log.DebugLevel)
@@ -185,4 +212,3 @@ func main() {
         }
 
 }
-

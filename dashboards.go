@@ -20,15 +20,15 @@ func (d Dashboard) getElement(client datadog.APIClient, id interface{}) (interfa
                 datadog.ContextAPIKeys,
                 map[string]datadog.APIKey{
                         "apiKeyAuth": {
-                                Key: os.Getenv("DD_CLIENT_API_KEY"),
+                                Key: os.Getenv("DATADOG_API_KEY"),
                         },
                         "appKeyAuth": {
-                                Key: os.Getenv("DD_CLIENT_APP_KEY"),
+                                Key: os.Getenv("DATADOG_APP_KEY"),
                         },
                 },
         )
         idStr := fmt.Sprintf("%v", id)
-        dash, r, err := client.DashboardsApi.GetDashboard(ctx, idStr).Execute()
+        dash, _, err := client.DashboardsApi.GetDashboard(ctx, idStr).Execute()
         return dash, err
 }
 
@@ -58,7 +58,7 @@ func (d Dashboard) getAllElements(client datadog.APIClient) ([]Item, error) {
 			},
 		},
 	)
-        dashboards, r, err := client.DashboardsApi.ListDashboards(ctx).Execute()
+        dashboards, _, err := client.DashboardsApi.ListDashboards(ctx).Execute()
         if err != nil {
                 return ids, err
         }
