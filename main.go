@@ -64,6 +64,7 @@ func (i *Item) renderElement(item interface{}, config LocalConfig) {
                         // log.Fatal(err)
                 }
                 out := bufio.NewWriter(f)
+		fmt.Println(out)
                 t.Execute(out, item)
                 out.Flush()
                 if err := f.Close(); err != nil {

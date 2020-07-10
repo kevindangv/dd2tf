@@ -6,6 +6,7 @@ import (
 	"context"
         "fmt"
 	"os"
+	"github.com/davecgh/go-spew/spew"
         datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
@@ -29,6 +30,7 @@ func (d Dashboard) getElement(client datadog.APIClient, id interface{}) (interfa
         )
         idStr := fmt.Sprintf("%v", id)
         dash, _, err := client.DashboardsApi.GetDashboard(ctx, idStr).Execute()
+	spew.Dump(dash)
         return dash, err
 }
 
@@ -51,10 +53,10 @@ func (d Dashboard) getAllElements(client datadog.APIClient) ([]Item, error) {
 		datadog.ContextAPIKeys,
 		map[string]datadog.APIKey{
 			"apiKeyAuth": {
-				Key: os.Getenv("DD_CLIENT_API_KEY"),
+				Key: os.Getenv("DATADOG_API_KEY"),
 			},
 			"appKeyAuth": {
-				Key: os.Getenv("DD_CLIENT_APP_KEY"),
+				Key: os.Getenv("DATADOG_APP_KEY"),
 			},
 		},
 	)

@@ -17,10 +17,10 @@ func (m Monitor) getElement(client datadog.APIClient, id interface{}) (interface
 			datadog.ContextAPIKeys,
 			map[string]datadog.APIKey{
 				"apiKeyAuth": {
-					Key: os.Getenv("DD_CLIENT_API_KEY"),
+					Key: os.Getenv("DATADOG_API_KEY"),
 				},
 				"appKeyAuth": {
-					Key: os.Getenv("DD_CLIENT_APP_KEY"),
+					Key: os.Getenv("DATADOG_APP_KEY"),
 				},
 			},
 		)
