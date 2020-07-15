@@ -55,7 +55,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
 	{{if .Label }}label = "{{ .Label }}"{{- end}}
 	{{if .Value }}value = "{{ .Value }}"{{- end}}
       }{{end}}{{end}}{{end}}
-      {{- if .Yaxis.Scale }}
+      {{- if .Yaxis }}
       yaxis {
 	{{if .Yaxis.IncludeZero }}include_zero = "{{ .Yaxis.IncludeZero }}"{{- end}}
 	{{if .Yaxis.Label }}label = "{{ .Yaxis.Label }}"{{- end}}
@@ -65,7 +65,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
       }{{end}}
     }{{end}}
     {{with .QueryValueWidgetDefinition }}
-    query_value__definition {
+    query_value_definition {
       title = "{{ .Title }}"
       {{- if .Autoscale -}}autoscale = "{{ .Autoscale }}"{{- end}}
       {{- if .CustomUnit -}}custom_unit = "{{ .CustomUnit }}{{- end}}
@@ -73,13 +73,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
       {{- with .Requests -}}{{range .}}
       request {
         q  = "{{ .Q }}"
-        {{if .Aggregator }}{{ if ne "" (DeRefString .Aggregator) -}}aggregator = "{{ .Aggregator }}"{{ end}}{{ end -}}
-        {{- if .Style -}}{{with .Style }}
-        style {
-          {{if .Palette }}palette = "{{ .Palette }}"{{- end}}
-          {{if .LineType }}line_type = "{{ .LineType }}"{{- end}}
-          {{if .LineWidth }}line_width = "{{ .LineWidth }}"{{- end}}
-        }{{end -}}{{end}}
+        {{if .Aggregator }}aggregator = "{{ .Aggregator }}"{{- end}}
         {{- if .ConditionalFormats }}{{- with .ConditionalFormats }}{{- range . }}
         conditional_formats {
           {{ if .Palette }}palette = "{{ .Palette }}"{{- end }}
