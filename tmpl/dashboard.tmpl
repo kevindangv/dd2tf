@@ -1,15 +1,68 @@
 resource "datadog_dashboard" "dd_{{ .Id }}"  {
   title       = "{{ .Title }}"
-  description = "{{ index .Description "value" }}"
+  description = "{{ .Description }}"
   layout      = "{{ .LayoutType }}"
   read_only   = "{{ .IsReadOnly -}}"
   {{with .Widgets -}}
   {{range . }}
   widget {
-    id = "{{ .Id }}"
-    {{with .WidgetDefinition -}}
+    id = "{{ .Id -}}"
+    {{- with .Definition -}}
+    {{- with .ToplistWidgetDefinition }}
     definition {
-	{{ . }}
-    }{{end}}
-  }{{end}}{{- end}}
+      title = "{{ .Title }}"
+      {{- with .Requests -}}{{range .}}
+      request {
+        q  = "{{ .Q }}"
+        {{- if .Style -}}{{with .Style }}
+	style {
+          {{if .Palette }}palette = "{{ .Palette }}"{{- end}}
+	  {{if .LineType }}line_type = "{{ .LineType }}"{{- end}}
+	  {{if .LineWidth }}line_width = "{{ .LineWidth }}"{{- end}}
+	}{{end -}}{{end}}
+	{{- if .ConditionalFormats }}{{- with .ConditionalFormats }}{{- range . }}
+	conditional_formats {
+	  {{ if .Palette }}palette = "{{ .Palette }}"{{- end }}
+	  comparator = "{{ .Comparator }}"
+	  {{ if .Value }}value = "{{ .Value }}"{{- end }}
+	  {{ if .CustomBgColor }}custom_bg_color = "{{ .CustomBgColor }}"{{- end }}
+          {{ if .CustomFgColor }}custom_fg_color = "{{ .CustomFgColor }}"{{- end }}
+        }{{end}}{{end}}{{end}}	
+      }{{end}}{{end}}
+    }{{- end}}
+    {{- with .TimeseriesWidgetDefinition }}
+    definition {
+      title = "{{ .Title }}"
+      {{- with .Requests}}{{range .}}
+      request {
+        q = "{{ .Q }}"
+	{{if .DisplayType }}display_type = "{{ .DisplayType }}"{{- end}}
+	{{- if .Style }}{{with .Style }}
+	style {
+	  {{if .Palette }}palette = "{{ .Palette }}"{{- end}}
+	  {{if .LineType }}line_type = "{{ .LineType }}"{{- end}}
+	  {{if .LineWidth }}line_width = "{{ .LineWidth }}"{{- end}}
+	}{{end}}{{end}}
+	{{- if .Metadata }}{{with .Metadata }}{{range .}}
+	metadata {
+	  {{if .Expression }}expression = "{{ .Expression }}"{{- end}}
+	  {{if .AliasName }}alias_name = "{{ .AliasName }}"{{- end}}
+	}{{end}}{{end}}{{end}}
+      }{{end}}{{end}}
+      {{- if .Markers }}{{with .Markers }}{{range .}}
+      markers {
+        {{if .DisplayType }}display_type = "{{ .DisplayType }}"{{- end}}
+	{{if .Label }}label = "{{ .Label }}"{{- end}}
+	{{if .Value }}value = "{{ .Value }}"{{- end}}
+      }{{end}}{{end}}{{end}}
+      {{- if .Yaxis.Scale }}
+      yaxis {
+	{{if .Yaxis.IncludeZero }}include_zero = "{{ .Yaxis.IncludeZero }}"{{- end}}
+	{{if .Yaxis.Label }}label = "{{ .Yaxis.Label }}"{{- end}}
+	{{if .Yaxis.Max }}max = "{{ .Yaxis.Max }}"{{- end}}
+	{{if .Yaxis.Min }}min = "{{ .Yaxis.Min }}"{{- end}}
+	{{if .Yaxis.Scale }}scale = "{{ .Yaxis.Scale }}"{{- end}}
+      }{{end}}
+    }{{end}} 
+  }{{end}}{{end}}{{- end}}
 }
