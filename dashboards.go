@@ -6,7 +6,7 @@ import (
 	"context"
         "fmt"
 	"os"
-	"github.com/davecgh/go-spew/spew"
+//	"github.com/davecgh/go-spew/spew"
         datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
@@ -30,7 +30,7 @@ func (d Dashboard) getElement(client datadog.APIClient, id interface{}) (interfa
         )
         idStr := fmt.Sprintf("%v", id)
         dash, _, err := client.DashboardsApi.GetDashboard(ctx, idStr).Execute()
-	spew.Dump(dash)
+//	spew.Dump(dash)
         return dash, err
 }
 
