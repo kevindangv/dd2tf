@@ -99,7 +99,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
             fill {
               q = "{{ .Q }}"
             }{{end}}
-          }{{end}}}
+          }{{end}}
           {{ if .Group -}}group = [{{$group := .Group}}{{range $index, $elem := .Group}}{{if $index}},{{end}}"{{$elem}}"{{end}}]{{- end}}
           {{ if .Scope -}}scope = [{{$scope := .Scope}}{{range $index, $elem := .Scope}}{{if $index}},{{end}}"{{$elem}}"{{end}}]{{- end}}
           {{ if .Style -}}
