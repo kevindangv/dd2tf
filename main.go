@@ -23,7 +23,7 @@ type LocalConfig struct {
 }
 
 var config = LocalConfig{
-        components: []DatadogElement{Dashboard{}}, //Monitor{}, ScreenBoard{}},
+        components: []DatadogElement{Dashboard{}, Monitor{}},// ScreenBoard{}},
 }
 
 type DatadogElement interface {

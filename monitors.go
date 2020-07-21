@@ -4,14 +4,16 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"os"
+	"strconv"
 	datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
 type Monitor struct {
 }
 
-func (m Monitor) getElement(client datadog.APIClient, id interface{}) (interface{}, error) {
+func (m Monitor) getElement(client datadog.APIClient, id interface {}) (interface{}, error) {
 		ctx := context.WithValue(
 			context.Background(),
 			datadog.ContextAPIKeys,
@@ -24,7 +26,9 @@ func (m Monitor) getElement(client datadog.APIClient, id interface{}) (interface
 				},
 			},
 		)
-        mon, _, err := client.MonitorsApi.GetMonitor(ctx, id.(int64)).Execute()
+	idStr := fmt.Sprintf("%v", id)
+	idInt, _ := strconv.ParseInt(idStr, 10, 64)
+        mon, _, err := client.MonitorsApi.GetMonitor(ctx, idInt).Execute()
         return mon, err
 }
 
