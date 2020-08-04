@@ -11,4 +11,6 @@ require (
 	golang.org/dl v0.0.0-20200611200201-72429b14455f // indirect
 )
 
+replace github.com/DataDog/datadog-api-client-go => /home/kevin/go/src/github.com/DataDog/datadog-api-client-go
+
 go 1.13

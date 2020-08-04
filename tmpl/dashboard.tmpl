@@ -1,12 +1,17 @@
 resource "datadog_dashboard" "dd_{{ .Id }}"  {
   title       = "{{ .Title }}"
-  description = "{{ .Description }}"
+  {{if .Description.Get }}description = "{{ .Description.Get }}"{{- end}}
   layout      = "{{ .LayoutType }}"
   read_only   = "{{ .IsReadOnly -}}"
-  {{with .Widgets -}}
+  {{- with .TemplateVariables }}{{range .}}
+  template_variable {
+    name = "{{ .Name }}"
+    prefix = "{{ .Prefix.Get }}"
+    default = "{{ .Default.Get }}"
+  }{{end}}{{end}}
+  {{with .Widgets}}
   {{range . }}
   widget {
-    id = "{{ .Id -}}"
     {{- with .Definition -}}
     {{- with .GroupWidgetDefinition}}
     group_definition {
@@ -14,7 +19,6 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
       {{- with .Widgets -}}
       {{range . }}
       widget {
-        id = "{{ .Id -}}"
         {{- with .Definition -}}
         {{- with .ToplistWidgetDefinition }}
         {{ .Type }}_definition {
@@ -49,35 +53,16 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
             style {
               {{if .Palette }}palette = "{{ .Palette }}"{{- end}}
               {{if .LineType }}line_type = "{{ .LineType }}"{{- end}}
-              {{if .LineWidth }}line_width = "{{ .LineWidth }}"{{- end}}
             }{{end}}{{end}}
-            {{- if .Metadata }}{{with .Metadata }}{{range .}}
-            metadata {
-              {{if .Expression }}expression = "{{ .Expression }}"{{- end}}
-              {{if .AliasName }}alias_name = "{{ .AliasName }}"{{- end}}
-            }{{end}}{{end}}{{end}}
           }{{end}}{{end}}
-          {{- if .Markers }}{{with .Markers }}{{range .}}
-          markers {
-            {{if .DisplayType }}display_type = "{{ .DisplayType }}"{{- end}}
-            {{if .Label }}label = "{{ .Label }}"{{- end}}
-            {{if .Value }}value = "{{ .Value }}"{{- end}}
-          }{{end}}{{end}}{{end}}
-          {{- if .Yaxis }}
-          yaxis {
-            {{if .Yaxis.IncludeZero }}include_zero = "{{ .Yaxis.IncludeZero }}"{{- end}}
-            {{if .Yaxis.Label }}label = "{{ .Yaxis.Label }}"{{- end}}
-            {{if .Yaxis.Max }}max = "{{ .Yaxis.Max }}"{{- end}}
-            {{if .Yaxis.Min }}min = "{{ .Yaxis.Min }}"{{- end}}
-            {{if .Yaxis.Scale }}scale = "{{ .Yaxis.Scale }}"{{- end}}
+	  {{- if .Time.LiveSpan }}
+	  time = {
+	    live_span = "{{ .LiveSpan }}"
           }{{end}}
         }{{end}}
-        {{with .QueryValueWidgetDefinition }}
+        {{- with .QueryValueWidgetDefinition }}
         query_value_definition {
           title = "{{ .Title }}"
-          {{- if .Autoscale -}}autoscale = "{{ .Autoscale }}"{{- end}}
-          {{- if .CustomUnit -}}custom_unit = "{{ .CustomUnit }}{{- end}}
-          {{- if .Precision -}}precision = "{{ .Precision }}"{{- end}}
           {{- with .Requests -}}{{range .}}
           request {
             q  = "{{ .Q }}"
@@ -86,7 +71,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
             conditional_formats {
               {{ if .Palette }}palette = "{{ .Palette }}"{{- end }}
               comparator = "{{ .Comparator }}"
-              {{ if .Value }}value = "{{ .Value }}"{{- end }}
+              {{ if .Value }}value = "{{ .Value }}"{{else}}value="0"{{- end }}
             }{{end}}{{end}}{{end}}
           }{{end}}{{end}}
         }{{end}}
@@ -143,35 +128,17 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
         style {
           {{if .Palette }}palette = "{{ .Palette }}"{{- end}}
           {{if .LineType }}line_type = "{{ .LineType }}"{{- end}}
-          {{if .LineWidth }}line_width = "{{ .LineWidth }}"{{- end}}
         }{{end}}{{end}}
-        {{- if .Metadata }}{{with .Metadata }}{{range .}}
-        metadata {
-          {{if .Expression }}expression = "{{ .Expression }}"{{- end}}
-          {{if .AliasName }}alias_name = "{{ .AliasName }}"{{- end}}
-        }{{end}}{{end}}{{end}}
       }{{end}}{{end}}
-      {{- if .Markers }}{{with .Markers }}{{range .}}
-      markers {
-        {{if .DisplayType }}display_type = "{{ .DisplayType }}"{{- end}}
-        {{if .Label }}label = "{{ .Label }}"{{- end}}
-        {{if .Value }}value = "{{ .Value }}"{{- end}}
-      }{{end}}{{end}}{{end}}
-      {{- if .Yaxis }}
-      yaxis {
-        {{if .Yaxis.IncludeZero }}include_zero = "{{ .Yaxis.IncludeZero }}"{{- end}}
-        {{if .Yaxis.Label }}label = "{{ .Yaxis.Label }}"{{- end}}
-        {{if .Yaxis.Max }}max = "{{ .Yaxis.Max }}"{{- end}}
-        {{if .Yaxis.Min }}min = "{{ .Yaxis.Min }}"{{- end}}
-        {{if .Yaxis.Scale }}scale = "{{ .Yaxis.Scale }}"{{- end}}
-      }{{end}}
+      {{- if .Time.LiveSpan}}
+      time = {
+        live_span = "{{ .Time.LiveSpan }}"
+      }
+      {{- end}}
     }{{end}}
-    {{with .QueryValueWidgetDefinition }}
+    {{- with .QueryValueWidgetDefinition }}
     query_value_definition {
       title = "{{ .Title }}"
-      {{- if .Autoscale -}}autoscale = "{{ .Autoscale }}"{{- end}}
-      {{- if .CustomUnit -}}custom_unit = "{{ .CustomUnit }}{{- end}}
-      {{- if .Precision -}}precision = "{{ .Precision }}"{{- end}}
       {{- with .Requests -}}{{range .}}
       request {
         q  = "{{ .Q }}"
@@ -180,7 +147,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
         conditional_formats {
           {{ if .Palette }}palette = "{{ .Palette }}"{{- end }}
           comparator = "{{ .Comparator }}"
-          {{ if .Value }}value = "{{ .Value }}"{{- end }}
+          {{ if .Value }}value = "{{ .Value }}"{{else}}value = "0"{{- end }}
         }{{end}}{{end}}{{end}}
       }{{end}}{{end}}
     }{{end}}
@@ -203,10 +170,4 @@ resource "datadog_dashboard" "dd_{{ .Id }}"  {
       }{{- end}}
     }{{end}}
   }{{end}}{{end}}{{- end}}
-  {{- with .TemplateVariables }}{{range .}}
-  template_variable {
-    name = "{{ .Name }}"
-    prefix = "{{ .Prefix }}"
-    default = "{{ .Default }}"
-  }{{end}}{{end}}
 }
