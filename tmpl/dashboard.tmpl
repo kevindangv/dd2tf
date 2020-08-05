@@ -1,4 +1,4 @@
-resource "datadog_dashboard" "dd_{{ .Id }}"  {
+resource "datadog_dashboard" "dd_{{ .Id }}" {
   title        = "{{ .Title }}"
   layout_type  = "{{ .LayoutType }}"
   is_read_only = {{ .IsReadOnly -}}
