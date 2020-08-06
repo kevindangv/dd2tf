@@ -41,7 +41,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}" {
               {{- end }}
             }{{end}}{{end}}{{end}}
           }{{end}}{{end}}
-          {{- if .Time.LiveSpan}}
+          {{- if .Time }}
           time = {
             live_span = "{{ .Time.LiveSpan }}"
           }{{- end}}
@@ -64,7 +64,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}" {
               {{- end}}
             }{{end}}{{end}}
           }{{end}}{{end}}
-	  {{- if .Time.LiveSpan }}
+	  {{- if .Time }}
 	  time = {
 	    live_span = "{{ .LiveSpan }}"
           }{{end}}
@@ -91,7 +91,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}" {
               {{- end }}
             }{{end}}{{end}}{{end}}
           }{{end}}{{end}}
-          {{- if .Time.LiveSpan}}
+          {{- if .Time }}
           time = {
             live_span = "{{ .Time.LiveSpan }}"
           }{{- end}}
@@ -106,7 +106,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}" {
               q = "{{ .Q }}"
             }{{end}}
           }{{end}}
-          {{- if .Time.LiveSpan}}
+          {{- if .Time }}
           time = {
             live_span = "{{ .Time.LiveSpan }}"
           }{{- end}}
@@ -169,7 +169,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}" {
           {{- end}}
         }{{end}}{{end}}
       }{{end}}{{end}}
-      {{- if .Time.LiveSpan}}
+      {{- if .Time }}
       time = {
         live_span = "{{ .Time.LiveSpan }}"
       }
@@ -197,7 +197,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}" {
           {{- end }}
         }{{end}}{{end}}{{end}}
       }{{end}}{{end}}
-      {{- if .Time.LiveSpan}}
+      {{- if .Time }}
       time = {
         live_span = "{{ .Time.LiveSpan }}"
       }{{- end}}
@@ -212,7 +212,7 @@ resource "datadog_dashboard" "dd_{{ .Id }}" {
           q = "{{ .Q }}"
         }{{end}}
       }{{end}}}
-      {{- if .Time.LiveSpan}}
+      {{- if .Time }}
       time = {
         live_span = "{{ .Time.LiveSpan }}"
       }{{- end}}
