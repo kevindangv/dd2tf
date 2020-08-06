@@ -28,7 +28,6 @@ func (m Monitor) getElement(client datadog.APIClient, id interface {}) (interfac
 		)
 	idStr := fmt.Sprintf("%v", id)
 	idInt, _ := strconv.ParseInt(idStr, 10, 64)
-	fmt.Printf(idStr)
         mon, _, err := client.MonitorsApi.GetMonitor(ctx, idInt).Execute()
         return mon, err
 }
