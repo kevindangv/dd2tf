@@ -54,19 +54,19 @@ func (i *Item) renderElement(item interface{}, config LocalConfig) {
 		"DeRefString":      func(s *string) string { return *s },
 	}).Parse(string(b))
 	if config.files {
-			log.Debug("Creating file", i.d.getName(), i.id)
-			file := fmt.Sprintf("%v-%v.tf", i.d.getName(), i.id)
-			f, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE, 0755)
-			if err != nil {
-				log.Fatal(err)
-			}
-			out := bufio.NewWriter(f)
-			fmt.Println(out)
-			t.Execute(out, item)
-			out.Flush()
-			if err := f.Close(); err != nil {
-				log.Fatal(err)
-			}
+		log.Debug("Creating file", i.d.getName(), i.id)
+		file := fmt.Sprintf("%v-%v.tf", i.d.getName(), i.id)
+		f, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE, 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+		out := bufio.NewWriter(f)
+		fmt.Println(out)
+		t.Execute(out, item)
+		out.Flush()
+		if err := f.Close(); err != nil {
+			log.Fatal(err)
+		}
 	} else {
 		t.Execute(os.Stdout, item)
 	}
