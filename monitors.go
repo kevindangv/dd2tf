@@ -14,22 +14,22 @@ type Monitor struct {
 }
 
 func (m Monitor) getElement(client datadog.APIClient, id interface {}) (interface{}, error) {
-		ctx := context.WithValue(
-			context.Background(),
-			datadog.ContextAPIKeys,
-			map[string]datadog.APIKey{
-				"apiKeyAuth": {
-					Key: os.Getenv("DATADOG_API_KEY"),
-				},
-				"appKeyAuth": {
-					Key: os.Getenv("DATADOG_APP_KEY"),
-				},
+	ctx := context.WithValue(
+		context.Background(),
+		datadog.ContextAPIKeys,
+		map[string]datadog.APIKey{
+			"apiKeyAuth": {
+				Key: os.Getenv("DATADOG_API_KEY"),
 			},
-		)
+			"appKeyAuth": {
+				Key: os.Getenv("DATADOG_APP_KEY"),
+			},
+		},
+	)
 	idStr := fmt.Sprintf("%v", id)
 	idInt, _ := strconv.ParseInt(idStr, 10, 64)
-        mon, _, err := client.MonitorsApi.GetMonitor(ctx, idInt).Execute()
-        return mon, err
+	mon, _, err := client.MonitorsApi.GetMonitor(ctx, idInt).Execute()
+	return mon, err
 }
 
 func (m Monitor) getAsset() string {
@@ -45,26 +45,25 @@ func (m Monitor) String() string {
 }
 
 func (m Monitor) getAllElements(client datadog.APIClient) ([]Item, error) {
-        var ids []Item
-        ctx := context.WithValue(
-				context.Background(),
-				datadog.ContextAPIKeys,
-				map[string]datadog.APIKey{
-						"apiKeyAuth": {
-								Key: os.Getenv("DATADOG_API_KEY"),
-						},
-						"appKeyAuth": {
-								Key: os.Getenv("DATADOG_APP_KEY"),
-						},
-				},
-		)
+	var ids []Item
+	ctx := context.WithValue(
+		context.Background(),
+		datadog.ContextAPIKeys,
+		map[string]datadog.APIKey{
+			"apiKeyAuth": {
+				Key: os.Getenv("DATADOG_API_KEY"),
+			},
+			"appKeyAuth": {
+				Key: os.Getenv("DATADOG_APP_KEY"),
+			},
+		},
+	)
 	monitors, _, err := client.MonitorsApi.ListMonitors(ctx).Execute()
-        if err != nil {
-                return nil, err
-        }
-        for _, elem := range monitors {
-                ids = append(ids, Item{id: *elem.Id, d: Monitor{}})
-        }
-        return ids, nil
+	if err != nil {
+		return nil, err
+	}
+	for _, elem := range monitors {
+		ids = append(ids, Item{id: *elem.Id, d: Monitor{}})
+	}
+	return ids, nil
 }
-
