@@ -24,7 +24,7 @@ func (d Dashboard) getElement(client datadog.APIClient, id interface{}) (interfa
 				Key: os.Getenv("DATADOG_APP_KEY"),
 			},
 		},
-    )
+    	)
 	idStr := fmt.Sprintf("%v", id)
 	dash, _, err := client.DashboardsApi.GetDashboard(ctx, idStr).Execute()
 	return dash, err
