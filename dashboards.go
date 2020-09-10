@@ -3,21 +3,35 @@
 package main
 
 import (
+	"context"
 	"fmt"
-	"github.com/zorkian/go-datadog-api"
+	"os"
+	datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
 type Dashboard struct {
 }
 
-func (d Dashboard) getElement(client datadog.Client, id interface{}) (interface{}, error) {
+func (d Dashboard) getElement(client datadog.APIClient, id interface{}) (interface{}, error) {
+	ctx := context.WithValue(
+		context.Background(),
+		datadog.ContextAPIKeys,
+		map[string]datadog.APIKey{
+			"apiKeyAuth": {
+				Key: os.Getenv("DATADOG_API_KEY"),
+			},
+			"appKeyAuth": {
+				Key: os.Getenv("DATADOG_APP_KEY"),
+			},
+		},
+    	)
 	idStr := fmt.Sprintf("%v", id)
-	dash, err := client.GetDashboard(idStr)
+	dash, _, err := client.DashboardsApi.GetDashboard(ctx, idStr).Execute()
 	return dash, err
 }
 
 func (d Dashboard) getAsset() string {
-	return "tmpl/timeboard.tmpl"
+	return "tmpl/dashboard.tmpl"
 }
 
 func (d Dashboard) getName() string {
@@ -28,13 +42,25 @@ func (d Dashboard) String() string {
 	return d.getName()
 }
 
-func (d Dashboard) getAllElements(client datadog.Client) ([]Item, error) {
+func (d Dashboard) getAllElements(client datadog.APIClient) ([]Item, error) {
 	var ids []Item
-	dashboards, err := client.GetDashboards()
+	ctx := context.WithValue(
+		context.Background(),
+		datadog.ContextAPIKeys,
+		map[string]datadog.APIKey{
+			"apiKeyAuth": {
+				Key: os.Getenv("DATADOG_API_KEY"),
+			},
+			"appKeyAuth": {
+				Key: os.Getenv("DATADOG_APP_KEY"),
+			},
+		},
+	)
+	dashboards, _, err := client.DashboardsApi.ListDashboards(ctx).Execute()
 	if err != nil {
 		return ids, err
 	}
-	for _, elem := range dashboards {
+	for _, elem := range *dashboards.Dashboards {
 		fmt.Println("found dashboard", *elem.Id)
 		ids = append(ids, Item{id: *elem.Id, d: Dashboard{}})
 	}

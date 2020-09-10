@@ -3,14 +3,32 @@
 package main
 
 import (
-	"github.com/zorkian/go-datadog-api"
+	"context"
+	"fmt"
+	"os"
+	"strconv"
+	datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
 type Monitor struct {
 }
 
-func (m Monitor) getElement(client datadog.Client, id interface{}) (interface{}, error) {
-	mon, err := client.GetMonitor(*datadog.Int(id.(int)))
+func (m Monitor) getElement(client datadog.APIClient, id interface {}) (interface{}, error) {
+	ctx := context.WithValue(
+		context.Background(),
+		datadog.ContextAPIKeys,
+		map[string]datadog.APIKey{
+			"apiKeyAuth": {
+				Key: os.Getenv("DATADOG_API_KEY"),
+			},
+			"appKeyAuth": {
+				Key: os.Getenv("DATADOG_APP_KEY"),
+			},
+		},
+	)
+	idStr := fmt.Sprintf("%v", id)
+	idInt, _ := strconv.ParseInt(idStr, 10, 64)
+	mon, _, err := client.MonitorsApi.GetMonitor(ctx, idInt).Execute()
 	return mon, err
 }
 
@@ -26,9 +44,21 @@ func (m Monitor) String() string {
 	return m.getName()
 }
 
-func (m Monitor) getAllElements(client datadog.Client) ([]Item, error) {
+func (m Monitor) getAllElements(client datadog.APIClient) ([]Item, error) {
 	var ids []Item
-	monitors, err := client.GetMonitors()
+	ctx := context.WithValue(
+		context.Background(),
+		datadog.ContextAPIKeys,
+		map[string]datadog.APIKey{
+			"apiKeyAuth": {
+				Key: os.Getenv("DATADOG_API_KEY"),
+			},
+			"appKeyAuth": {
+				Key: os.Getenv("DATADOG_APP_KEY"),
+			},
+		},
+	)
+	monitors, _, err := client.MonitorsApi.ListMonitors(ctx).Execute()
 	if err != nil {
 		return nil, err
 	}

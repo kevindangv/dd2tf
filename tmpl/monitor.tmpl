@@ -11,51 +11,52 @@ EOT
 {{ .Options.EscalationMessage }}
 EOT
 
-  query = {{ .Query | escapeCharacters }}
+  query               = {{ .Query | escapeCharacters }}
 
   {{- with .Options }}
   {{- if .NotifyNoData }}
-  notify_no_data    = {{ .NotifyNoData }}
+  notify_no_data      = {{ .NotifyNoData }}
   {{- end }}
-  {{- if .RenotifyInterval }}
-  renotify_interval = {{ .RenotifyInterval }}
+  {{- if not .RenotifyInterval.Get }}
+  renotify_interval   = 0
+  {{ else }}
+  renotify_interval   = {{ .RenotifyInterval.Get }}
   {{- end }}
   {{- if .NotifyAudit }}
-  notify_audit = {{ .NotifyAudit }}
+  notify_audit        = {{ .NotifyAudit }}
   {{- end }}
-  {{- if .TimeoutH }}
-  timeout_h = {{ .TimeoutH }}
+  {{- if not .TimeoutH.Get }}
+  timeout_h           = 0
+  {{ else }}
+  timeout_h           = {{ .TimeoutH.Get }}
   {{- end }}
   {{- if .IncludeTags }}
-  include_tags = {{ .IncludeTags  }}
+  include_tags        = {{ .IncludeTags  }}
   {{- end }}
   {{- if .RequireFullWindow }}
   require_full_window = {{ .RequireFullWindow }}
   {{- end }}
   {{- if .NewHostDelay }}
-  new_host_delay = {{ .NewHostDelay }}
+  new_host_delay      = {{ .NewHostDelay.Get }}
   {{- end }}
-  {{- if .EvaluationDelay }}
-  evaluation_delay = {{ .EvaluationDelay }}
+  {{- if not .EvaluationDelay.Get -}}
+  {{ else }}
+  evaluation_delay    = {{ .EvaluationDelay.Get }}
   {{- end }}
 
   {{- if .Thresholds }}
   {{- with .Thresholds }}
   thresholds = {
-    {{- if .Ok }}
-    ok = {{ .Ok }}
+    {{- if not .Ok.Get -}}
+    {{ else }}
+    ok       = {{ .Ok.Get }}
     {{- end }}
-    {{- if .Warning }}
-    warning = {{ .Warning }}
-    {{- end }}
-    {{- if .WarningRecovery }}
-    warning_recovery = {{ .WarningRecovery }}
+    {{- if not .Warning.Get -}}
+    {{ else }}
+    warning  = {{ .Warning.Get }}
     {{- end }}
     {{- if .Critical }}
     critical = {{ .Critical }}
-    {{- end }}
-    {{- if .CriticalRecovery }}
-    critical_recovery = {{ .CriticalRecovery }}
     {{- end }}
   }
   {{- end }}

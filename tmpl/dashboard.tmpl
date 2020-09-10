@@ -1,0 +1,228 @@
+resource "datadog_dashboard" "dd_{{ .Id }}" {
+  title        = "{{ .Title }}"
+  layout_type  = "{{ .LayoutType }}"
+  is_read_only = {{ .IsReadOnly -}}
+  {{- with .TemplateVariables }}{{range .}}
+  template_variable {
+    name    = "{{ .Name }}"
+    prefix  = "{{ .Prefix.Get }}"
+    default = "{{ .Default.Get }}"
+  }{{end}}{{end}}
+  {{- with .Widgets}}
+  {{range . }}
+  widget {
+    {{- with .Definition -}}
+    {{- with .GroupWidgetDefinition}}
+    group_definition {
+      title = "{{ .Title }}"
+      {{- with .Widgets -}}
+      {{range . }}
+      widget {
+        {{- with .Definition -}}
+        {{- with .ToplistWidgetDefinition }}
+        {{ .Type }}_definition {
+          title = "{{ .Title }}"
+          {{- with .Requests -}}{{range .}}
+          request {
+            q = "{{ .Q }}"
+            {{- if .Style -}}{{with .Style }}
+            style {
+              {{if .Palette }}palette = "{{ .Palette }}"{{- end}}
+              {{if .LineType }}line_type = "{{ .LineType }}"{{- end}}
+            }{{end -}}{{end}}
+            {{- if .ConditionalFormats }}{{- with .ConditionalFormats }}{{- range . }}
+            conditional_formats {
+              {{ if .Palette -}}
+	      palette    = "{{ .Palette }}"
+              {{- end }}
+              comparator = "{{ .Comparator }}"
+              {{ if .Value -}}
+              value      = "{{ .Value }}"
+              {{- end }}
+            }{{end}}{{end}}{{end}}
+          }{{end}}{{end}}
+          {{- if .Time }}
+          time = {
+            live_span = "{{ .Time.LiveSpan }}"
+          }{{- end}}
+        }{{- end}}
+        {{- with .TimeseriesWidgetDefinition }}
+        {{ .Type }}_definition {
+          title = "{{ .Title }}"
+          {{- with .Requests}}{{range .}}
+          request {
+            q            = "{{ .Q }}"
+            {{if .DisplayType -}}
+            display_type = "{{ .DisplayType }}"{{- end}}
+            {{- if .Style }}{{with .Style }}
+            style {
+              {{if .Palette -}}
+              palette   = "{{ .Palette }}"
+              {{- end}}
+              {{if .LineType -}}
+              line_type = "{{ .LineType }}"
+              {{- end}}
+            }{{end}}{{end}}
+          }{{end}}{{end}}
+	  {{- if .Time }}
+	  time = {
+	    live_span = "{{ .LiveSpan }}"
+          }{{end}}
+        }{{end}}
+        {{- with .QueryValueWidgetDefinition }}
+        query_value_definition {
+          title = "{{ .Title }}"
+          {{- with .Requests -}}{{range .}}
+          request {
+            q          = "{{ .Q }}"
+            {{if .Aggregator -}}
+            aggregator = "{{ .Aggregator }}"
+            {{- end}}
+            {{- if .ConditionalFormats }}{{- with .ConditionalFormats }}{{- range . }}
+            conditional_formats {
+              {{ if .Palette -}}
+              palette    = "{{ .Palette }}"
+              {{- end }}
+              comparator = "{{ .Comparator }}"
+              {{ if .Value -}}
+              value      = "{{ .Value }}"
+              {{else -}}
+              value      = "0"
+              {{- end }}
+            }{{end}}{{end}}{{end}}
+          }{{end}}{{end}}
+          {{- if .Time }}
+          time = {
+            live_span = "{{ .Time.LiveSpan }}"
+          }{{- end}}
+        }{{end}}
+        {{- with .HostMapWidgetDefinition }}
+        hostmap_definition {
+          title = "{{ .Title }}"
+          {{ with .Requests }}
+          request {
+            {{- with .Fill }}
+            fill {
+              q = "{{ .Q }}"
+            }{{end}}
+          }{{end}}
+          {{- if .Time }}
+          time = {
+            live_span = "{{ .Time.LiveSpan }}"
+          }{{- end}}
+          {{ if .Group -}}group = [{{$group := .Group}}{{range $index, $elem := .Group}}{{if $index}},{{end}}"{{$elem}}"{{end}}]{{- end}}
+          {{ if .Scope -}}scope = [{{$scope := .Scope}}{{range $index, $elem := .Scope}}{{if $index}},{{end}}"{{$elem}}"{{end}}]{{- end}}
+          {{ if .Style -}}
+          style = {
+            palette      = "{{ .Style.Palette }}"
+            palette_flip = "{{ .Style.PaletteFlip }}"
+          }{{- end}}
+        }{{end}}
+      }{{end}}{{end}}{{- end}}
+    }{{end -}}
+    {{- with .ToplistWidgetDefinition }}
+    {{ .Type }}_definition {
+      title = "{{ .Title }}"
+      {{- with .Requests -}}{{range .}}
+      request {
+        q = "{{ .Q }}"
+        {{- if .Style -}}{{with .Style }}
+        style {
+          {{if .Palette -}}
+          palette   = "{{ .Palette }}"
+          {{- end}}
+          {{if .LineType -}}
+          line_type = "{{ .LineType }}"
+          {{- end}}
+        }{{end -}}{{end}}
+        {{- if .ConditionalFormats }}{{- with .ConditionalFormats }}{{- range . }}
+        conditional_formats {
+          {{ if .Palette -}}
+	  palette    = "{{ .Palette }}"
+	  {{- end }}
+          comparator = "{{ .Comparator }}"
+          {{ if .Value -}}
+          value      = "{{ .Value }}"
+          {{- end }}
+        }{{end}}{{end}}{{end}}
+      }{{end}}{{end}}
+      {{- if .Time }}
+      time = {
+        live_span = "{{ .Time.LiveSpan }}"
+      }{{- end}}
+    }{{- end}}
+    {{- with .TimeseriesWidgetDefinition }}
+    {{ .Type }}_definition {
+      title = "{{ .Title }}"
+      {{- with .Requests}}{{range .}}
+      request {
+        q            = "{{ .Q }}"
+        {{if .DisplayType -}}
+        display_type = "{{ .DisplayType }}"{{- end}}
+        {{- if .Style }}{{with .Style }}
+        style {
+          {{if .Palette -}}
+          palette   = "{{ .Palette }}"
+          {{- end}}
+          {{if .LineType -}}
+          line_type = "{{ .LineType }}"
+          {{- end}}
+        }{{end}}{{end}}
+      }{{end}}{{end}}
+      {{- if .Time }}
+      time = {
+        live_span = "{{ .Time.LiveSpan }}"
+      }
+      {{- end}}
+    }{{end}}
+    {{- with .QueryValueWidgetDefinition }}
+    query_value_definition {
+      title = "{{ .Title }}"
+      {{- with .Requests -}}{{range .}}
+      request {
+        q          = "{{ .Q }}"
+        {{if .Aggregator -}}
+        aggregator = "{{ .Aggregator }}"
+        {{- end}}
+        {{- if .ConditionalFormats }}{{- with .ConditionalFormats }}{{- range . }}
+        conditional_formats {
+          {{ if .Palette -}}
+          palette    = "{{ .Palette }}"
+          {{- end }}
+          comparator = "{{ .Comparator }}"
+          {{ if .Value -}}
+          value      = "{{ .Value }}"
+          {{else -}}
+          value      = "0"
+          {{- end }}
+        }{{end}}{{end}}{{end}}
+      }{{end}}{{end}}
+      {{- if .Time }}
+      time = {
+        live_span = "{{ .Time.LiveSpan }}"
+      }{{- end}}
+    }{{end}}
+    {{- with .HostMapWidgetDefinition }}
+    hostmap_definition {
+      title = "{{ .Title }}"
+      {{ with .Requests }}
+      request {
+        {{- with .Fill }}
+        fill {
+          q = "{{ .Q }}"
+        }{{end}}
+      }{{end}}}
+      {{- if .Time }}
+      time = {
+        live_span = "{{ .Time.LiveSpan }}"
+      }{{- end}}
+      {{ if .Group -}}group = [{{$group := .Group}}{{range $index, $elem := .Group}}{{if $index}},{{end}}"{{$elem}}"{{end}}]{{- end}}
+      {{ if .Scope -}}scope = [{{$scope := .Scope}}{{range $index, $elem := .Scope}}{{if $index}},{{end}}"{{$elem}}"{{end}}]{{- end}}
+      {{ if .Style -}}
+      style = {
+        palette      = "{{ .Style.Palette }}"
+        palette_flip = "{{ .Style.PaletteFlip }}"
+      }{{- end}}
+    }{{end}}
+  }{{end}}{{end}}{{- end}}
+}

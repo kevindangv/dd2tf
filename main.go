@@ -4,32 +4,32 @@ package main
 
 import (
 	"bufio"
+	"context"
 	"fmt"
 	log "github.com/sirupsen/logrus"
 	"os"
 	"strconv"
 	"text/template"
-
 	flag "github.com/spf13/pflag"
-	"github.com/zorkian/go-datadog-api"
+	datadog "github.com/DataDog/datadog-api-client-go/api/v1/datadog"
 )
 
 type LocalConfig struct {
-	client     datadog.Client
+	client     datadog.APIClient
 	items      []Item
 	files      bool
 	components []DatadogElement
 }
 
 var config = LocalConfig{
-	components: []DatadogElement{Dashboard{}, Monitor{}, ScreenBoard{}},
+	components: []DatadogElement{Dashboard{}, Monitor{}},
 }
 
 type DatadogElement interface {
-	getElement(client datadog.Client, i interface{}) (interface{}, error)
+	getElement(client datadog.APIClient, i interface{}) (interface{}, error)
 	getAsset() string
 	getName() string
-	getAllElements(client datadog.Client) ([]Item, error)
+	getAllElements(client datadog.APIClient) ([]Item, error)
 }
 
 type Item struct {
@@ -44,7 +44,6 @@ func (i *Item) getElement(config LocalConfig) (interface{}, error) {
 		log.Fatal(err)
 	}
 	return item, err
-
 }
 
 func (i *Item) renderElement(item interface{}, config LocalConfig) {
@@ -54,19 +53,19 @@ func (i *Item) renderElement(item interface{}, config LocalConfig) {
 		"escapeCharacters": escapeCharacters,
 		"DeRefString":      func(s *string) string { return *s },
 	}).Parse(string(b))
-
 	if config.files {
 		log.Debug("Creating file", i.d.getName(), i.id)
 		file := fmt.Sprintf("%v-%v.tf", i.d.getName(), i.id)
 		f, err := os.OpenFile(file, os.O_RDWR|os.O_CREATE, 0755)
 		if err != nil {
-			// log.Fatal(err)
+			log.Fatal(err)
 		}
 		out := bufio.NewWriter(f)
+		fmt.Println(out)
 		t.Execute(out, item)
 		out.Flush()
 		if err := f.Close(); err != nil {
-			// log.Fatal(err)
+			log.Fatal(err)
 		}
 	} else {
 		t.Execute(os.Stdout, item)
@@ -143,6 +142,21 @@ func main() {
 			subcommandOpts := NewSecondaryOptions(subcommand)
 			subcommand.Parse(os.Args[2:])
 			if subcommand.Parsed() {
+				configuration := datadog.NewConfiguration()
+
+				ctx := context.WithValue(
+					context.Background(),
+					datadog.ContextAPIKeys,
+					map[string]datadog.APIKey{
+						"apiKeyAuth": {
+							Key: os.Getenv("DATADOG_API_KEY"),
+						},
+						"appKeyAuth": {
+							Key: os.Getenv("DATADOG_APP_KEY"),
+						},
+					},
+				)
+
 				datadogAPIKey, ok := os.LookupEnv("DATADOG_API_KEY")
 				if !ok {
 					log.Fatal("Datadog API key not found, please make sure that DATADOG_API_KEY env variable is set")
@@ -153,15 +167,12 @@ func main() {
 					log.Fatal("Datadog APP key not found, please make sure that DATADOG_APP_KEY env variable is set")
 				}
 
-				datadogBaseURL, ok := os.LookupEnv("DATADOG_BASE_URL")
-
 				config = LocalConfig{
-					client: *datadog.NewClient(datadogAPIKey, datadogAPPKey),
+					client: *datadog.NewAPIClient(configuration),
 				}
 
-				if ok {
-					config.client.SetBaseUrl(datadogBaseURL)
-				}
+				config.client.KeyManagementApi.UpdateApplicationKey(ctx, datadogAPPKey).Execute()
+				config.client.KeyManagementApi.UpdateAPIKey(ctx, datadogAPIKey).Execute()
 
 				if subcommandOpts.debug {
 					log.SetLevel(log.DebugLevel)
